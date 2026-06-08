@@ -4,6 +4,32 @@
 
 ---
 
+## [0.1.1] - 2026-06-08
+
+### Bug Fixes
+- **BUG-1**: Removed unreachable Linux code block in `prepare_vscode.sh` (lines 247-279)
+  - Code was dead due to earlier Windows-only check at lines 193-200
+  - Also removed incorrect snapcraft.yaml comment pointing to wrong file
+- **BUG-2**: Fixed variable scope issue in `build.sh`
+  - Moved `VSCODE_PLATFORM="win32"` outside CI conditional
+  - Ensures variable is always set for REH builds even in CI mode
+- **BUG-3**: Simplified redundant nested `if` checks in `build.sh`
+  - Removed unnecessary `if [[ "${OS_NAME}" == "windows" ]]` (already validated above)
+- **BUG-4**: Updated `announcements-extra.json` - still had VSCodium references
+  - Changed to Voidium Code welcome announcement
+- **BUG-5**: Fixed `icons/build_icons.sh` - still downloading from VSCodium/icons repo
+  - Updated URLs to bouclem/Voidium-Code
+- **BUG-6**: Fixed `icons/build_icons.sh` - SVG references still using old codium filenames
+  - Updated to use new voidium.svg and voidium_light.svg files
+
+### New Features
+- **New Logo**: Added SVG logo designs
+  - `voidium.svg` - Main dark theme logo with purple/indigo gradient
+  - `voidium_light.svg` - Light theme variant
+  - `voidium_insiders.svg` - Insiders edition with cyan/purple gradient
+
+---
+
 ## [0.1.0] - 2026-06-08
 
 ### Major Changes

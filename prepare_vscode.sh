@@ -190,20 +190,13 @@ set -x
 export ELECTRON_SKIP_BINARY_DOWNLOAD=1
 export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 
-if [[ "${OS_NAME}" == "linux" ]]; then
-  export VSCODE_SKIP_NODE_VERSION_CHECK=1
-
-   if [[ "${npm_config_arch}" == "arm" ]]; then
-    export npm_config_arm_version=7
-  fi
-elif [[ "${OS_NAME}" == "windows" ]]; then
+if [[ "${OS_NAME}" == "windows" ]]; then
   if [[ "${npm_config_arch}" == "arm" ]]; then
     export npm_config_arm_version=7
   fi
 else
-  if [[ "${CI_BUILD}" != "no" ]]; then
-    clang++ --version
-  fi
+  echo "Only Windows builds are supported." >&2
+  exit 1
 fi
 
 node build/npm/preinstall.ts
@@ -212,11 +205,7 @@ mv .npmrc .npmrc.bak
 cp ../npmrc .npmrc
 
 for i in {1..5}; do # try 5 times
-  if [[ "${CI_BUILD}" != "no" && "${OS_NAME}" == "osx" ]]; then
-    CXX=clang++ npm ci && break
-  else
-    npm ci && break
-  fi
+  npm ci && break
 
   if [[ $i == 5 ]]; then
     echo "Npm install failed too many times" >&2
@@ -255,40 +244,7 @@ replace "s|\\[\\/\\* BUILTIN_ANNOUNCEMENTS \\*\\/\\]|$( tr -d '\n' < ../announce
 replace 's|Microsoft Corporation|Voidware|' build/lib/electron.ts
 replace 's|([0-9]) Microsoft|\1 Voidware|' build/lib/electron.ts
 
-if [[ "${OS_NAME}" == "linux" ]]; then
-  # microsoft adds their apt repo to sources
-  # unless the app name is code-oss
-  # as we are renaming the application to vscodium
-  # we need to edit a line in the post install template
-  if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
-    sed -i "s/code-oss/voidium-insiders/" resources/linux/debian/postinst.template
-  else
-    sed -i "s/code-oss/voidium/" resources/linux/debian/postinst.template
-  fi
-
-  # fix the packages metadata
-  # code.appdata.xml
-  sed -i 's|Visual Studio Code|Voidium Code|g' resources/linux/code.appdata.xml
-  sed -i 's|https://code.visualstudio.com/docs/setup/linux|https://github.com/bouclem/Voidium-Code#download-install|' resources/linux/code.appdata.xml
-  sed -i 's|https://code.visualstudio.com/home/home-screenshot-linux-lg.png|https://voidium-code.com/img/voidium-code.png|' resources/linux/code.appdata.xml
-  sed -i 's|https://code.visualstudio.com|https://voidium-code.com|' resources/linux/code.appdata.xml
-
-  # control.template
-  sed -i 's|Microsoft Corporation <vscode-linux@microsoft.com>|Voidware Team https://github.com/bouclem/Voidium-Code/graphs/contributors|'  resources/linux/debian/control.template
-  sed -i 's|Visual Studio Code|Voidium Code|g' resources/linux/debian/control.template
-  sed -i 's|https://code.visualstudio.com/docs/setup/linux|https://github.com/bouclem/Voidium-Code#download-install|' resources/linux/debian/control.template
-  sed -i 's|https://code.visualstudio.com|https://voidium-code.com|' resources/linux/debian/control.template
-
-  # code.spec.template
-  sed -i 's|Microsoft Corporation|Voidware Team|' resources/linux/rpm/code.spec.template
-  sed -i 's|Visual Studio Code Team <vscode-linux@microsoft.com>|Voidware Team https://github.com/bouclem/Voidium-Code/graphs/contributors|' resources/linux/rpm/code.spec.template
-  sed -i 's|Visual Studio Code|Voidium Code|' resources/linux/rpm/code.spec.template
-  sed -i 's|https://code.visualstudio.com/docs/setup/linux|https://github.com/bouclem/Voidium-Code#download-install|' resources/linux/rpm/code.spec.template
-  sed -i 's|https://code.visualstudio.com|https://voidium-code.com|' resources/linux/rpm/code.spec.template
-
-  # snapcraft.yaml
-  sed -i 's|Visual Studio Code|Voidium Code|' resources/linux/rpm/code.spec.template
-elif [[ "${OS_NAME}" == "windows" ]]; then
+if [[ "${OS_NAME}" == "windows" ]]; then
   # code.iss
   sed -i 's|https://code.visualstudio.com|https://voidium-code.com|' build/win32/code.iss
   sed -i 's|Microsoft Corporation|Voidware|' build/win32/code.iss

@@ -22,26 +22,24 @@ if [[ "${SHOULD_BUILD}" == "yes" ]]; then
     exit 1
   fi
 
-  if [[ "${OS_NAME}" == "windows" ]]; then
-    # in CI, packaging will be done by a different job
-    if [[ "${CI_BUILD}" == "no" ]]; then
-      . ../build/windows/rtf/make.sh
+  VSCODE_PLATFORM="win32"
 
-      # generate Group Policy definitions
-      npm run copy-policy-dto --prefix build
-      node build/lib/policies/policyGenerator.ts build/lib/policies/policyData.jsonc win32
+  # in CI, packaging will be done by a different job
+  if [[ "${CI_BUILD}" == "no" ]]; then
+    . ../build/windows/rtf/make.sh
 
-      npm run gulp "vscode-win32-${VSCODE_ARCH}-min-packing"
+    # generate Group Policy definitions
+    npm run copy-policy-dto --prefix build
+    node build/lib/policies/policyGenerator.ts build/lib/policies/policyData.jsonc win32
 
-      if [[ "${VSCODE_ARCH}" != "x64" ]]; then
-        SHOULD_BUILD_REH="no"
-        SHOULD_BUILD_REH_WEB="no"
-      fi
+    npm run gulp "vscode-win32-${VSCODE_ARCH}-min-packing"
 
-      . ../build_cli.sh
+    if [[ "${VSCODE_ARCH}" != "x64" ]]; then
+      SHOULD_BUILD_REH="no"
+      SHOULD_BUILD_REH_WEB="no"
     fi
 
-    VSCODE_PLATFORM="win32"
+    . ../build_cli.sh
   fi
 
   if [[ "${SHOULD_BUILD_REH}" != "no" ]]; then

@@ -4,24 +4,27 @@
 
 ---
 
-## Current Version: 0.1.0
+## Current Version: 0.1.1
 
 ### Completed
-- [x] Rebrand from VSCodium to Voidium Code
-- [x] Remove macOS/Linux build support (Windows-only for now)
-- [x] Create core documentation (README, TODO, CHANGELOG)
-
-### In Progress
-- [ ] Testing Windows builds (x64, ARM64)
-- [ ] Verify all branding strings updated
+- [x] Rebrand from VSCodium to Voidium Code (0.1.0)
+- [x] Remove macOS/Linux build support (Windows-only for now) (0.1.0)
+- [x] Create core documentation (README, TODO, CHANGELOG) (0.1.0)
+- [x] Bug fixes found via code review:
+  - [x] BUG-1: Removed unreachable Linux code block in `prepare_vscode.sh`
+  - [x] BUG-2: Fixed `VSCODE_PLATFORM` variable scope in `build.sh`
+  - [x] BUG-3: Simplified redundant nested `if` checks in `build.sh`
+  - [x] BUG-4: Updated `announcements-extra.json` VSCodium references
+  - [x] BUG-5: Fixed `icons/build_icons.sh` VSCodium download URLs
+  - [x] BUG-6: Fixed `icons/build_icons.sh` old SVG filename references
+- [x] New logo design (SVG format)
+  - `icons/stable/voidium.svg` - Dark theme logo
+  - `icons/stable/voidium_light.svg` - Light theme logo
+  - `icons/insider/voidium_insiders.svg` - Insiders edition
 
 ---
 
 ## Upcoming Versions
-
-### 0.1.1
-- [ ] Bug fixes and stability improvements
-- [ ] New logo design
 
 ### 0.1.2
 - [ ] Add Voidium theme
