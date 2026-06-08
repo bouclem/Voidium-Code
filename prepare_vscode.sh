@@ -3,6 +3,12 @@
 
 set -e
 
+# Clone VS Code source if not present
+if [[ ! -d "vscode" ]]; then
+  echo "Cloning VS Code source..."
+  git clone https://github.com/microsoft/vscode.git --depth 1 vscode
+fi
+
 if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
   cp -rp src/insider/* vscode/
 else
