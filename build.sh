@@ -17,22 +17,12 @@ if [[ "${SHOULD_BUILD}" == "yes" ]]; then
 
   npm run gulp vscode-min-prepack
 
-  if [[ "${OS_NAME}" == "osx" ]]; then
-    # remove win32 node modules
-    rm -f .build/extensions/ms-vscode.js-debug/src/win32-app-container-tokens.*.node
+  if [[ "${OS_NAME}" != "windows" ]]; then
+    echo "Only Windows builds are supported in Voidium Code."
+    exit 1
+  fi
 
-    # generate Group Policy definitions
-    npm run copy-policy-dto --prefix build
-    node build/lib/policies/policyGenerator.ts build/lib/policies/policyData.jsonc darwin
-
-    npm run gulp "vscode-darwin-${VSCODE_ARCH}-min-packing"
-
-    find "../VSCode-darwin-${VSCODE_ARCH}" -print0 | xargs -0 touch -c
-
-    . ../build_cli.sh
-
-    VSCODE_PLATFORM="darwin"
-  elif [[ "${OS_NAME}" == "windows" ]]; then
+  if [[ "${OS_NAME}" == "windows" ]]; then
     # in CI, packaging will be done by a different job
     if [[ "${CI_BUILD}" == "no" ]]; then
       . ../build/windows/rtf/make.sh
@@ -52,24 +42,6 @@ if [[ "${SHOULD_BUILD}" == "yes" ]]; then
     fi
 
     VSCODE_PLATFORM="win32"
-  else # linux
-    # remove win32 node modules
-    rm -f .build/extensions/ms-vscode.js-debug/src/win32-app-container-tokens.*.node
-
-    # in CI, packaging will be done by a different job
-    if [[ "${CI_BUILD}" == "no" ]]; then
-      # generate Group Policy definitions
-      npm run copy-policy-dto --prefix build
-      node build/lib/policies/policyGenerator.ts build/lib/policies/policyData.jsonc linux
-
-      npm run gulp "vscode-linux-${VSCODE_ARCH}-min-packing"
-
-      find "../VSCode-linux-${VSCODE_ARCH}" -print0 | xargs -0 touch -c
-
-      . ../build_cli.sh
-    fi
-
-    VSCODE_PLATFORM="linux"
   fi
 
   if [[ "${SHOULD_BUILD_REH}" != "no" ]]; then
