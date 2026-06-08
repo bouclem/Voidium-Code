@@ -1,0 +1,97 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 0.1.2)'
+        required: true
+      prerelease:
+        description: 'Is this a prerelease?'
+        type: boolean
+        default: false
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          npm install -g gulp-cli
+          .
+
+      - name: Build
+        env:
+          OS_NAME: windows
+          VSCODE_ARCH: ${{ matrix.arch }}
+          RELEASE_VERSION: ${{ github.event.inputs.version || github.ref_name }}
+          SHOULD_BUILD: yes
+          CI_BUILD: no
+        run: |
+          ./build.sh
+        shell: bash
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: voidium-code-windows-${{ matrix.arch }}
+          path: VSCode-win32-${{ matrix.arch }}/**/*.exe
+
+  release:
+    needs: build-windows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: voidium-code-*
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          VERSION=${{ github.event.inputs.version || github.ref_name }}
+          VERSION=${VERSION#v}  # Remove 'v' prefix if present
+          
+          # Extract changelog section for this version
+          awk "/^## \[$VERSION\]/{flag=1; next} /^## \[/{flag=0} flag" docs/CHANGELOG.md > release_notes.md
+          
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          cat release_notes.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.version && format('v{0}', github.event.inputs.version) || github.ref }}
+          name: Voidium Code ${{ github.event.inputs.version || github.ref_name }}
+          body: ${{ steps.release_notes.outputs.notes }}
+          prerelease: ${{ github.event.inputs.prerelease || contains(github.ref_name, '-insider') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
+          files: |
+            artifacts/**/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

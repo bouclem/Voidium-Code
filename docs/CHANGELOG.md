@@ -4,6 +4,36 @@
 
 ---
 
+## [0.1.2] - 2026-06-08
+
+### New Features
+- **Voidium Theme**: Added custom dark theme for Voidium Code
+  - `voidium-theme.json` - Main theme with purple/indigo color scheme
+  - Dark background (#0F0F1A) with purple accents
+  - Optimized syntax highlighting for code readability
+  - Terminal colors matching the theme palette
+- **Voidium Insiders Theme**: Cyan-accented variant for Insiders builds
+  - `voidium-theme.json` (insider version) with cyan (#22D3EE) highlights
+  - Darker background (#0A0A12) for distinction
+- **Auto-Update System**: GitHub Releases integration
+  - Checks for updates on startup (5 second delay to not block startup)
+  - Smart release filtering:
+    - **Stable builds**: Only see stable releases (non-prerelease)
+    - **Insiders builds**: Only see pre-releases (marked as prerelease on GitHub)
+  - User prompt with 3 options:
+    - "Download & Install" - Downloads and prompts to install
+    - "View Release" - Opens release notes in browser
+    - "Later" - Skips this update, continues with current version
+  - Platform-specific asset selection (Windows x64, ARM64)
+  - Progress notification during download
+  - Automatic restart after installation
+  - Status bar item for manual update check
+  - Commands:
+    - `voidium.checkForUpdates` - Manual check
+    - `voidium.disableAutoUpdateCheck` - Disable automatic checks
+
+---
+
 ## [0.1.1] - 2026-06-08
 
 ### Bug Fixes
