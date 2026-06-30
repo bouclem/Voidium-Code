@@ -45,13 +45,6 @@
 - [ ] Improve startup performance
 - [ ] Reduce memory usage
 
-### 0.1.3
-- [ ] Add welcome popup for first-time users
-
-### 0.1.4
-- [ ] Improve startup performance
-- [ ] Reduce memory usage
-
 ---
 
 ## 0.2.0 - AI Features
@@ -102,12 +95,4 @@
 
 ---
 
-## Contributing
-
-Want to help? Check items above and submit PRs!
-
-See [Contributing Guide](old/CONTRIBUTING.md) for guidelines.
-
----
-
-Last updated: 2026-06-08
+Last updated: 2026-07-01
