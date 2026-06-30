@@ -19,3 +19,11 @@ stores/snapcraft/insider/*.snap
 stores/snapcraft/stable/*.snap
 font-size/node_modules/
 font-size/generate-css.js
+
+# Ignore entire patches folder (contains modified patches during build)
+patches/
+
+# Ignore build logs & vscode folder
+build.log
+.vscode/
+vscode/
