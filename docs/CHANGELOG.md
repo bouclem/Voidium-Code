@@ -4,6 +4,25 @@
 
 ---
 
+## [0.1.3] - 2026-07-01
+
+### New Features
+- **Welcome Popup**: First-time user welcome notification
+  - `src/stable/src/voidium-welcome.ts` - Welcome service for stable builds
+  - `src/insider/src/voidium-welcome.ts` - Welcome service for insiders builds
+  - Shows automatically on first launch (2 second delay after startup)
+  - Re-shows when welcome version changes (e.g., major updates)
+  - Three action buttons:
+    - "Open README" - Opens project documentation in browser
+    - "Select Theme" - Opens VS Code theme picker to try Voidium theme
+    - "Got It" - Dismisses the popup
+  - Global state tracking prevents repeated popups
+  - Commands:
+    - `voidium.showWelcome` - Manually trigger welcome popup
+    - `voidium.resetWelcome` - Reset welcome state for next startup
+
+---
+
 ## [0.1.2] - 2026-06-08
 
 ### New Features

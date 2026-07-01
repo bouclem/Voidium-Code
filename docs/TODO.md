@@ -4,7 +4,7 @@
 
 ---
 
-## Current Version: 0.1.2
+## Current Version: 0.1.3
 
 ### Completed
 - [x] Rebrand from VSCodium to Voidium Code (0.1.0)
@@ -33,13 +33,17 @@
   - Platform-specific asset selection (Windows x64/ARM64)
   - Progress notification during download
   - Automatic restart after installation
+- [x] **Welcome Popup** (0.1.3)
+  - `src/stable/src/voidium-welcome.ts` - First-time user welcome for stable
+  - `src/insider/src/voidium-welcome.ts` - First-time user welcome for insiders
+  - Shows on first launch or when welcome version changes
+  - Actions: Open README, Select Theme, Got It
+  - Global state tracking to avoid repeated popups
+  - Commands: `voidium.showWelcome`, `voidium.resetWelcome`
 
 ---
 
 ## Upcoming Versions
-
-### 0.1.3
-- [ ] Add welcome popup for first-time users
 
 ### 0.1.4
 - [ ] Improve startup performance
