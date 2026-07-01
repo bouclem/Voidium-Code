@@ -4,7 +4,7 @@
 
 ---
 
-## Current Version: 0.1.3
+## Current Version: 0.2.0
 
 ### Completed
 - [x] Rebrand from VSCodium to Voidium Code (0.1.0)
@@ -45,22 +45,6 @@
 
 ## Upcoming Versions
 
-### 0.1.4 — Optimization Update 1
-- [ ] Improve startup performance
-- [ ] Reduce memory usage
-
-> **Note**: These items require modifying VS Code core source code, not just the packaging layer. Marked as future/experimental — not planned for active development yet.
-
----
-
-## 0.2.0 - AI Features
-
-### Core AI Integration
-- [ ] Add AI chat interface
-- [ ] Add Ollama support
-- [ ] Settings menu for model configuration
-- [ ] Model manager
-
 ### 0.2.1
 - [ ] GitHub/GitLab integrations
 - [ ] OpenRouter and OpenAI-compatible API support
@@ -87,7 +71,42 @@
 
 ---
 
+## Completed Versions
+
+### 0.2.0 - AI Features
+- [x] Add AI chat interface
+  - Sidebar webview chat panel with activity bar icon
+  - `src/stable/src/voidium-chat.ts` - Stable chat provider (purple theme)
+  - `src/insider/src/voidium-chat.ts` - Insiders chat provider (cyan theme)
+  - Streaming responses with token-by-token rendering
+  - Cancel button to stop generation mid-stream
+  - Chat history maintained in session
+- [x] Add Ollama support
+  - Default AI provider (localhost:11434)
+  - Streaming chat API integration
+  - Model list fetching from /api/tags
+  - Configurable via `voidium.ai.ollamaUrl` setting
+- [x] Settings menu for model configuration
+  - VS Code Settings integration (same place as VS Code settings)
+  - `voidium.ai.ollamaUrl` - Ollama server URL
+  - `voidium.ai.defaultModel` - Default model selection
+  - `voidium.ai.temperature` - Response temperature (0-2)
+  - Live config reload (URL changes take effect immediately)
+- [x] Model manager
+  - In-chat model dropdown (select model from available Ollama models)
+  - Refresh button to reload model list
+  - Model selection persists during session
+  - Extension manifest: `voidium-chat-pkg.json` (stable & insider)
+
+---
+
 ## Future (0.?.?)
+
+### Optimization Update 1
+- [ ] Improve startup performance
+- [ ] Reduce memory usage
+
+> **Note**: These items require modifying VS Code core source code, not just the packaging layer. Not planned for active development yet.
 
 ### Website
 - [ ] Landing page

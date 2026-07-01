@@ -1,0 +1,82 @@
+{
+  "name": "voidium-chat",
+  "displayName": "Voidium AI Chat - Insiders",
+  "description": "AI chat interface with Ollama support (Insiders)",
+  "version": "0.2.0-insider",
+  "publisher": "voidware",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./voidium-chat",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "voidium-chat",
+          "title": "Voidium AI",
+          "icon": "$(comment-discussion)"
+        }
+      ]
+    },
+    "views": {
+      "voidium-chat": [
+        {
+          "type": "webview",
+          "id": "voidium.chatView",
+          "name": "Chat",
+          "visibility": "visible"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "voidium.openChat",
+        "title": "Voidium AI: Open Chat",
+        "category": "Voidium AI"
+      },
+      {
+        "command": "voidium.clearChat",
+        "title": "Voidium AI: Clear Chat",
+        "category": "Voidium AI"
+      }
+    ],
+    "configuration": {
+      "title": "Voidium AI",
+      "properties": {
+        "voidium.ai.ollamaUrl": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "URL of the Ollama server",
+          "scope": "machine"
+        },
+        "voidium.ai.defaultModel": {
+          "type": "string",
+          "default": "llama3",
+          "description": "Default model to use for chat (must be available in Ollama)",
+          "scope": "machine"
+        },
+        "voidium.ai.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Temperature for model responses (0 = focused, 2 = creative)",
+          "scope": "machine"
+        }
+      }
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "voidium.clearChat",
+          "when": "view == voidium.chatView",
+          "group": "navigation"
+        }
+      ]
+    }
+  }
+}

@@ -4,6 +4,40 @@
 
 ---
 
+## [0.2.0] - 2026-07-01
+
+### New Features
+- **AI Chat Interface**: Sidebar chat panel powered by Ollama
+  - `src/stable/src/voidium-chat.ts` - Stable chat provider (purple/indigo theme)
+  - `src/insider/src/voidium-chat.ts` - Insiders chat provider (cyan theme)
+  - `src/stable/src/voidium-chat-pkg.json` - Extension manifest (stable)
+  - `src/insider/src/voidium-chat-pkg.json` - Extension manifest (insiders)
+  - Activity bar icon for quick access
+  - Streaming responses (token-by-token rendering)
+  - Cancel button to stop generation mid-stream
+  - Session chat history (maintained during session)
+  - Enter to send, Shift+Enter for newline
+  - Auto-resizing input textarea
+- **Ollama Support**: Default AI provider
+  - Connects to local Ollama server (default: `http://localhost:11434`)
+  - Streaming chat API (`/api/chat`) with NDJSON parsing
+  - Model list fetching from `/api/tags`
+  - Configurable server URL via `voidium.ai.ollamaUrl`
+  - Live config reload (URL changes take effect without restart)
+- **Settings Integration**: VS Code Settings panel
+  - `voidium.ai.ollamaUrl` - Ollama server URL (default: `http://localhost:11434`)
+  - `voidium.ai.defaultModel` - Default model (default: `llama3`)
+  - `voidium.ai.temperature` - Response temperature 0-2 (default: 0.7)
+- **Model Manager**: In-chat model dropdown
+  - Dropdown selector for available Ollama models
+  - Refresh button to reload model list
+  - Model selection persists during session
+- **Commands**:
+  - `voidium.openChat` - Open the AI chat sidebar
+  - `voidium.clearChat` - Clear chat history
+
+---
+
 ## [0.1.3] - 2026-07-01
 
 ### New Features
