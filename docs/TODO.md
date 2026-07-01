@@ -45,9 +45,11 @@
 
 ## Upcoming Versions
 
-### 0.1.4
+### 0.1.4 — Optimization Update 1
 - [ ] Improve startup performance
 - [ ] Reduce memory usage
+
+> **Note**: These items require modifying VS Code core source code, not just the packaging layer. Marked as future/experimental — not planned for active development yet.
 
 ---
 
